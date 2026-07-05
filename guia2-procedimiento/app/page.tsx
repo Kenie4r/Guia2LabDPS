@@ -4,30 +4,54 @@ import styles from "./page.module.css"
 
 
 
+
+type CoversionType = "CtoF" | "FtoC";
+
+
+
+
+
+
 export default function Home() {
-  const [contador, setContador] = useState<number>(0);
-  const [mensaje, setMensaje] = useState<string>("");
-  const incrementar = () => {
-    setMensaje("");
-    setContador(contador + 1);
+  const [TempInicial, setTempInicial] = useState<number>(0);
+  const [TempFinal, setTempFinal] = useState<number>(0);
+  const [ConversionType, setConversionType] = useState<CoversionType>("CtoF");
+  const conversion: Record<CoversionType, (temp: number) => number> = {
+    CtoF: (temp) => (temp * 9/5) + 32,
+    FtoC: (temp) => (temp - 32) * 5/9
   };
-  const decrementar = () => {
-    if (contador > 0) {
-      setMensaje("");
-      setContador(contador - 1);
-    }else {
-      setMensaje("El contador no puede ser menor a 0");
-    }
-  };
-  
+
   return (
     <main className={styles.main}>
-      <h1>Contador</h1>
-      <p className={styles.contador}> {contador}</p>
-    <p className={styles.mensaje}> {mensaje}</p>
-      <div className={styles.boton}>
-      <button onClick={incrementar}>Incrementar</button>
-      <button onClick={decrementar}>Decrementar</button>
+      <h1>Conversor de Temperatura</h1>
+      <div className={styles.form}>
+       
+       <div> <label htmlFor="tempInicial">Temperatura Inicial:</label>
+        <input
+          type="number"
+          id="tempInicial"
+          value={TempInicial}
+          onChange={(e) => setTempInicial(parseFloat(e.target.value))}
+        />
+        </div>
+        <div>
+        <select
+          value={ConversionType}
+          onChange={(e) => setConversionType(e.target.value as CoversionType)}
+        >
+          <option value="CtoF">Celsius a Fahrenheit</option>
+          <option value="FtoC">Fahrenheit a Celsius</option>
+        </select>
+
+        </div>
+        <div>
+        <button onClick={() => setTempFinal(conversion[ConversionType](TempInicial))}>
+          Convertir
+        </button>
+        </div>
+      </div>
+      <div className={styles.result}>
+        <p>Temperatura Final: {TempFinal.toFixed(2)}</p>
       </div>
     </main>
   );

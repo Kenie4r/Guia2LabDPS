@@ -75,3 +75,32 @@
   cursor: pointer;
   margin-right: 0.5rem;
 }
+
+.main .form {
+  color: #5a6a7e;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.main .form div  {
+  display: grid;
+  grid-template-columns: 1fr ;
+}
+.main .form input, .main .form select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.main .result {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #5a6a7e;
+  background: #e2e8f0;
+  border: 1px solid #e2e8f0;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
