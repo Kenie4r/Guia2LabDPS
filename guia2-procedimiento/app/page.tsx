@@ -1,4 +1,71 @@
+"use client";
+import {useState} from "react";
 import styles from "./page.module.css"
+
+type Operacion = "suma" | "resta" | "multi" | "div" | "pot" | "raiz";
+
+export default function Home() {
+
+  const [num1, setNum1] = useState<string>("");
+  const [num2, setNum2] = useState<string>("");
+  const [operacion, setOperacion] = useState<string | null >(null);
+  const [resultado, setResultado] = useState<number | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+  const calcular = (op : Operacion) : void => {
+    setError(null);
+    const n1 = parseFloat(num1);
+    const n2 = parseFloat(num2);
+
+    if (isNaN(n1) || isNaN(n2) && op !== "raiz") {
+      setError("Por favor, ingrese números válidos.");
+      return;
+    }
+    if (op === "div" && n2 === 0) {
+      setError("No se puede dividir entre cero.");
+      return;
+    }
+
+    if (op === "raiz" && n1 < 0) {
+      setError("No se puede calcular la raíz cuadrada de un número negativo.");
+      return;
+    }
+    const resultados : Record<Operacion, number> = {
+      suma: n1 + n2,
+      resta: n1 - n2,
+      multi: n1 * n2,
+      div: n1 / n2,
+      pot: Math.pow(n1, n2),
+      raiz: Math.sqrt(n1),
+    };
+
+
+    setResultado((Math.round(resultados[op] * 100) / 100));
+
+  }
+  
+    return (
+      <main className={styles.main}>
+      <div className={styles.calculadora}>
+        <h2>Calculadora</h2>
+        <input type="number" value={num1}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNum1(e.target.value)} />
+        <input type="number" value={num2}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNum2(e.target.value)} />
+        {(["suma","resta","multi","div","pot","raiz"] as Operacion[])
+          .map(op => <button key={op} onClick={() => calcular(op)}>{op}</button>)}
+        <button onClick={() => { setNum1(""); setNum2(""); setResultado(null); setError(null); }}>Limpiar</button>
+        {resultado && <p>Resultado: {resultado}</p>}
+        {error && <p className={styles.error}>{error}</p>}
+      </div>
+    </main>
+
+    ); 
+
+}
+
+//ejercicio 2 de la guia 2 de procedimiento
+/*import styles from "./page.module.css"
 
 
 interface Jugador {
